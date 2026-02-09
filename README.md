@@ -23,4 +23,27 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Deploying to Cloudflare Pages
+
+This app is configured to deploy to [Cloudflare Pages](https://pages.cloudflare.com/).
+
+### Deploy via Git Integration (Recommended)
+
+1. Push your code to a Git repository (GitHub, GitLab, etc.)
+2. Log in to [Cloudflare Pages](https://pages.cloudflare.com/)
+3. Click "Create a project" and connect your repository
+4. Configure the build settings:
+   - **Build command:** `npm run build`
+   - **Build output directory:** `.svelte-kit/cloudflare`
+   - **Node.js version:** 18 or higher
+5. Click "Save and Deploy"
+
+### Deploy via Wrangler CLI
+
+Alternatively, you can deploy directly using Wrangler:
+
+```bash
+npm install -g wrangler
+npm run build
+npx wrangler pages deploy .svelte-kit/cloudflare
+```
