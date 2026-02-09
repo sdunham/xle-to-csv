@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { Container, Form, FormGroup, Input, Label } from 'sveltestrap';
-	let files: FileList;
-	let error: string = '';
+	let files = $state<FileList>();
+	let error = $state('');
 
-	$: if (files && files.length > 0) {
-		error = '';
-	}
+	$effect(() => {
+		if (files && files.length > 0) {
+			error = '';
+		}
+	});
 
 	const downloadCSV = (data: string, filename: string) => {
 		const blob = new Blob([data], { type: 'text/csv' });
@@ -59,18 +60,27 @@
 	};
 </script>
 
-<Container sm>
-	<h1>Levelogger XLE to CSV Converter</h1>
+<div class="container py-5" style="max-width: 600px;">
+	<h1 class="mb-4">Levelogger XLE to CSV Converter</h1>
 
-	<Form on:submit={handleSubmit}>
-		<FormGroup>
-			<Label for="xle-file"
-				>Upload a .xle file of your Levelogger data to convert to a .csv of your log data:</Label
-			>
-			<Input bind:files id="xle-file" name="xle" type="file" invalid={!!error} feedback={error} />
-		</FormGroup>
-		<FormGroup>
-			<Input type="submit" value="Convert to CSV" />
-		</FormGroup>
-	</Form>
-</Container>
+	<form onsubmit={handleSubmit}>
+		<div class="mb-3">
+			<label for="xle-file" class="form-label">
+				Upload a .xle file of your Levelogger data to convert to a .csv of your log data:
+			</label>
+			<input
+				bind:files
+				id="xle-file"
+				name="xle"
+				type="file"
+				class="form-control {error ? 'is-invalid' : ''}"
+			/>
+			{#if error}
+				<div class="invalid-feedback">{error}</div>
+			{/if}
+		</div>
+		<div class="mb-3">
+			<input type="submit" value="Convert to CSV" class="btn btn-primary" />
+		</div>
+	</form>
+</div>
